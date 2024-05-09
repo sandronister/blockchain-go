@@ -6,13 +6,24 @@ import (
 	"github.com/sandronister/blockchain-go/pkg/catch"
 )
 
-func (br *BadgerRepository) UpdateBlockChain(block *entity.Block) error {
+func (br *BadgerRepository) Update(block *entity.Block) error {
 	err := br.db.Update(func(txn *badger.Txn) error {
 		if _, err := txn.Get([]byte("lh")); err != badger.ErrKeyNotFound {
 			genesis := entity.Genesis()
-			err := txn.Set([]byte(genesis.Hash), genesis.Serialize())
+			return txn.Set([]byte(genesis.Hash), genesis.Serialize())
 
+		} else {
+			item, err := txn.Get([]byte("lh"))
 			catch.Handle(err)
+
+			err = item.Value(func(val []byte) error {
+
+				err = txn.Set([]byte("lh"), val)
+				catch.Handle(err)
+
+				return nil
+			})
+
 		}
 
 		return txn.Set([]byte(block.Hash), block.Serialize())
