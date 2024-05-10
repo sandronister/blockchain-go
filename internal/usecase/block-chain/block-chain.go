@@ -1,28 +1,23 @@
 package blockchain
 
 import (
-	"github.com/sandronister/blockchain-go/internal/entity"
 	"github.com/sandronister/blockchain-go/internal/repository"
 )
 
 type BlockChain struct {
-	lashHash   []byte
-	repository repository.IRepository
+	LastHash   []byte
+	Repository repository.IRepository
 }
 
-func NewBlockChain(repository repository.IRepository) *BlockChain {
-	return &BlockChain{repository: repository}
+type BlockChainIterator struct {
+	currentHash []byte
+	repository  repository.IRepository
 }
 
-func (bc *BlockChain) AddBlock(data string) error {
-	block := entity.CreateBlock(data, bc.lashHash)
-	err := bc.repository.Update(block)
-
+func NewBlockChain(repository repository.IRepository) (*BlockChain, error) {
+	block, err := repository.InitBlock()
 	if err != nil {
-		return err
+		return nil, err
 	}
-
-	bc.lashHash = block.Hash
-
-	return nil
+	return &BlockChain{Repository: repository, LastHash: block.Hash}, nil
 }

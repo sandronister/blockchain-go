@@ -8,23 +8,17 @@ import (
 
 func (br *BadgerRepository) Update(block *entity.Block) error {
 	err := br.db.Update(func(txn *badger.Txn) error {
-		if _, err := txn.Get([]byte("lh")); err != badger.ErrKeyNotFound {
-			genesis := entity.Genesis()
-			return txn.Set([]byte(genesis.Hash), genesis.Serialize())
 
-		} else {
-			item, err := txn.Get([]byte("lh"))
+		item, err := txn.Get([]byte("lh"))
+		catch.Handle(err)
+
+		err = item.Value(func(val []byte) error {
+
+			err = txn.Set([]byte("lh"), val)
 			catch.Handle(err)
 
-			err = item.Value(func(val []byte) error {
-
-				err = txn.Set([]byte("lh"), val)
-				catch.Handle(err)
-
-				return nil
-			})
-
-		}
+			return nil
+		})
 
 		return txn.Set([]byte(block.Hash), block.Serialize())
 
