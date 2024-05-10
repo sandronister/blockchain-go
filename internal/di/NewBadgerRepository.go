@@ -7,7 +7,7 @@ import (
 	"github.com/sandronister/blockchain-go/internal/repository"
 )
 
-func NewBadgerRepository(cfg *configs.Config) (repository.IRepository, error) {
+func NewBadgerRepository(cfg *configs.Conf) (repository.IRepository, error) {
 	connection, err := badger.GetConnection(cfg)
 	if err != nil {
 		return nil, err
