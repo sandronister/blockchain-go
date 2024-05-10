@@ -11,7 +11,11 @@ import (
 
 func main() {
 
-	config, _ := configs.LoadConfig(".")
+	config, err := configs.LoadConfig(".")
+
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	repository, err := di.NewBadgerRepository(config)
 
@@ -45,5 +49,4 @@ func main() {
 		fmt.Println()
 
 	}
-
 }
