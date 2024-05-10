@@ -5,7 +5,7 @@ import (
 	"github.com/sandronister/blockchain-go/internal/entity"
 )
 
-func (b *BadgerRepository) GetBlock(hash string) (*entity.Block, error) {
+func (b *BadgerRepository) GetBlock(hash []byte) (*entity.Block, error) {
 
 	var block *entity.Block
 
