@@ -10,14 +10,10 @@ type BlockChain struct {
 }
 
 type BlockChainIterator struct {
-	currentHash []byte
-	repository  repository.IRepository
+	lastHash   []byte
+	repository repository.IRepository
 }
 
 func NewBlockChain(repository repository.IRepository) (*BlockChain, error) {
-	block, err := repository.InitBlock()
-	if err != nil {
-		return nil, err
-	}
-	return &BlockChain{Repository: repository, LastHash: block.Hash}, nil
+	return &BlockChain{Repository: repository, LastHash: nil}, nil
 }

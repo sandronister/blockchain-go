@@ -18,19 +18,14 @@ func main() {
 	}
 
 	repository, err := di.NewBadgerRepository(config)
-
 	catch.Handle(err)
 
 	chain, err := blockchain.NewBlockChain(repository)
-
 	catch.Handle(err)
 
-	chain.AddBlock("Block Zeus")
-	chain.AddBlock("Block Hades")
-	chain.AddBlock("Block Poseidon")
-	chain.AddBlock("Block Ares")
-	chain.AddBlock("Block Athena")
-	chain.AddBlock("Block Apollo")
+	err = chain.Load()
+
+	catch.Handle(err)
 
 	iter := chain.GetIterator()
 

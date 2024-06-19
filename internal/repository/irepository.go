@@ -9,4 +9,5 @@ type IRepository interface {
 	SetBlock(block *entity.Block) error
 	SetLastHash(block []byte) error
 	InitBlock() (*entity.Block, error)
+	Close() error
 }
