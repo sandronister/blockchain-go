@@ -18,30 +18,33 @@ func main() {
 	}
 
 	repository, err := di.NewBadgerRepository(config)
+
 	catch.Handle(err)
+
+	defer repository.Close()
 
 	chain, err := blockchain.NewBlockChain(repository)
 	catch.Handle(err)
 
-	err = chain.Load()
-
-	catch.Handle(err)
+	chain.Init()
+	chain.AddBlock("First block")
+	chain.AddBlock("Second block")
+	chain.AddBlock("Third block")
+	chain.AddBlock("Fourth block")
 
 	iter := chain.GetIterator()
 
 	for {
-
 		block, err := iter.Next()
 
 		if err != nil {
-			break
+			panic(err)
 		}
 
-		fmt.Println("Block")
-		fmt.Printf("Hash: %x\n", block.Hash)
+		fmt.Printf("Prev. hash: %x\n", block.PrevHash)
 		fmt.Printf("Data: %s\n", block.Data)
-		fmt.Printf("PrevHash: %x\n", block.PrevHash)
+		fmt.Printf("Hash: %x\n", block.Hash)
 		fmt.Println()
-
 	}
+
 }

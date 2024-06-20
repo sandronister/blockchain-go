@@ -3,7 +3,6 @@ package entity
 import (
 	"bytes"
 	"crypto/sha256"
-	"fmt"
 	"math"
 	"math/big"
 
@@ -44,7 +43,6 @@ func (p *ProofOfWork) Run() (int, []byte) {
 		data := p.InitData(nonce)
 		hash = sha256.Sum256(data)
 
-		fmt.Printf("\r%x", hash)
 		intHash.SetBytes(hash[:])
 
 		if intHash.Cmp(p.Target) == -1 {
@@ -54,7 +52,6 @@ func (p *ProofOfWork) Run() (int, []byte) {
 		}
 
 	}
-	fmt.Println()
 
 	return nonce, hash[:]
 }
