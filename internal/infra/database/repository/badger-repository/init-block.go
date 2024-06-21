@@ -5,15 +5,15 @@ import (
 	"github.com/sandronister/blockchain-go/internal/entity"
 )
 
-func (br *BadgerRepository) InitBlock() (*entity.Block, error) {
-	genesisBlock := entity.Genesis()
+func (br *BadgerRepository) InitBlock(block entity.Block) error {
+
 	err := br.db.Update(func(txn *badger.Txn) error {
-		err := txn.Set([]byte(genesisBlock.Hash), genesisBlock.Serialize())
+		err := txn.Set([]byte(block.Hash), block.Serialize())
 		if err != nil {
 			return err
 		}
-		return txn.Set([]byte("lh"), []byte(genesisBlock.Hash))
+		return txn.Set([]byte("lh"), []byte(block.Hash))
 	})
 
-	return genesisBlock, err
+	return err
 }

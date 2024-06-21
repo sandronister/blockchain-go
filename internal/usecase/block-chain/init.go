@@ -1,10 +1,30 @@
 package blockchain
 
+import (
+	"fmt"
+
+	"github.com/sandronister/blockchain-go/internal/entity"
+)
+
 func (bc *BlockChain) Init() error {
-	block, err := bc.Repository.InitBlock()
+
+	lastHash, err := bc.Repository.GetLastHash()
+
 	if err != nil {
-		return err
+		block := entity.Genesis()
+		err = bc.Repository.InitBlock(block)
+		if err != nil {
+			return err
+		}
+
+		lastHash = block.Hash
+		fmt.Println(lastHash, "---------------------------------------------")
+
 	}
-	bc.LastHash = block.Hash
+
+	fmt.Printf("Last hash: %x\n ", lastHash)
+
+	bc.LastHash = lastHash
+
 	return nil
 }
