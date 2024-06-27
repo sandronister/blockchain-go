@@ -1,8 +1,6 @@
 package blockchain
 
 import (
-	"fmt"
-
 	"github.com/sandronister/blockchain-go/internal/entity"
 )
 
@@ -18,11 +16,8 @@ func (bc *BlockChain) Init() error {
 		}
 
 		lastHash = block.Hash
-		fmt.Println(lastHash, "---------------------------------------------")
 
 	}
-
-	fmt.Printf("Last hash: %x\n ", lastHash)
 
 	bc.LastHash = lastHash
 

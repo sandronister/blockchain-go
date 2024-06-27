@@ -6,13 +6,18 @@ import (
 
 func (bc *BlockChain) AddBlock(data string) error {
 	block := entity.CreateBlock(data, bc.LastHash)
-	err := bc.Repository.Update(block)
+	err := bc.Repository.SetBlock(block)
 
 	if err != nil {
 		return err
 	}
 
 	bc.LastHash = block.Hash
+	err = bc.Repository.SetLastHash(block.Hash)
+
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
