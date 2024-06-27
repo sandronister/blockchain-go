@@ -14,6 +14,6 @@ type BlockChainIterator struct {
 	repository repository.IRepository
 }
 
-func NewBlockChain(repository repository.IRepository) (*BlockChain, error) {
-	return &BlockChain{Repository: repository, LastHash: nil}, nil
+func NewBlockChain(repository repository.IRepository) *BlockChain {
+	return &BlockChain{Repository: repository, LastHash: nil}
 }

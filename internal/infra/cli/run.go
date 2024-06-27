@@ -29,6 +29,7 @@ func (c *CommandLine) Run() {
 	}
 
 	if addBlockCmd.Parsed() {
+
 		if *addBlockData == "" {
 			addBlockCmd.Usage()
 			runtime.Goexit()
